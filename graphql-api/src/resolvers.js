@@ -2,12 +2,24 @@ const userRepo = require('./repo/userRepo');
 
 const resolvers = {
     Query: {
-      users: () => userRepo.getUsers(),
+      users: async () => {
+        try {
+          return await userRepo.getUsers();
+        }
+        catch (err) {
+          throw new Error('Failed to fetch users');
+        }
+      },
     },
     Mutation: {
-      addUser: (parent, args) => {
-        const {name, email} = args;
-        return userRepo.addUser(name, email);
+      addUser: async (parent, args) => {
+        try {
+          const {name, email} = args;
+          return await userRepo.addUser(name, email);
+        }
+        catch (err) {
+          throw new Error(err.message);
+        }
       }
     }
   };

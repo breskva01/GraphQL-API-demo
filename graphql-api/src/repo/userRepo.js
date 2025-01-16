@@ -1,17 +1,31 @@
+const User = require('../model/user');
+
 class UserRepo {
-    constructor() {
-        this.users = [];
-        this.idCounter = 1;
+
+    async getUsers() {
+        try {
+            const users = await User.findAll();
+            return users;
+        }
+        catch (err) {
+            console.error('Error getting users:', err);
+            throw err;
+        }
     }
 
-    getUsers() {
-        return this.users;
-    }
-
-    addUser(name, email) {
-        const newUser = {id: this.idCounter++, name, email};
-        this.users.push(newUser);
-        return newUser;
+    async addUser(name, email) {
+        try {
+            const newUser = await User.create({ name, email });
+            return newUser;
+        }
+        catch (err) {
+            if (err.name === 'SequelizeUniqueConstraintError') {
+                console.error('Duplicate email error:', err);
+                throw new Error('Email already exists');
+            }
+            console.error('Error adding user:', err);
+            throw err;
+        }
     }
 }
 
