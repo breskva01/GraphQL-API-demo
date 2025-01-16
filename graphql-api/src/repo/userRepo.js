@@ -1,10 +1,25 @@
+const { Sequelize } = require('sequelize');
 const User = require('../model/user');
 
 class UserRepo {
 
-    async getUsers() {
+    async getUsers(name, email) {
         try {
-            const users = await User.findAll();
+            const whereConditions = {};
+            if (name) {
+                whereConditions.name = {
+                    [Sequelize.Op.like]: `%${name}%`
+                };
+            }
+            if (email) {
+                whereConditions.email = {
+                    [Sequelize.Op.like]: `%${email}%`
+                };
+            }
+
+            const users = await User.findAll({
+                where: whereConditions
+            });
             return users;
         }
         catch (err) {

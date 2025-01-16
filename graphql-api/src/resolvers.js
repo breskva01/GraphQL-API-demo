@@ -3,9 +3,10 @@ const emailValidator = require('./service/emailValidator');
 
 const resolvers = {
     Query: {
-      users: async () => {
+      users: async (parent, args) => {
         try {
-          return await userRepo.getUsers();
+          const {name, email} = args;
+          return await userRepo.getUsers(name, email);
         }
         catch (err) {
           throw new Error('Failed to fetch users');
