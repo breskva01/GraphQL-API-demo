@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
@@ -8,8 +9,10 @@ sequelize.sync({ force: false })
   .then(() => console.log('Data synced and tables ready.'))
   .catch(err => console.log('Error syncing database:', err));
 
+const PORT = process.env.SERVER_PORT || 4000;
+
 const server = new ApolloServer({ typeDefs, resolvers });
 
-server.listen().then(({ url }) => {
+server.listen({ port: PORT }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });

@@ -1,11 +1,9 @@
 const { Sequelize } = require('sequelize');
 const User = require('../model/user');
 
-class UserRepo {
+const deleteType = process.env.DELETE_TYPE || 'logical';
 
-    constructor() {
-        this.isLogicalDelete = false;
-    }
+class UserRepo {
 
     async getUsers(name, email) {
         try {
@@ -48,7 +46,7 @@ class UserRepo {
     }
 
     async deleteUser(id) {
-        if (this.isLogicalDelete) {
+        if (deleteType === 'logical') {
             return await this.logicalDelete(id); 
         } else {
             return await this.physicalDelete(id);

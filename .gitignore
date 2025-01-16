@@ -136,3 +136,6 @@ dist
 # SQLite temporary and journal files
 *.sqlite-journal
 *.sqlite3-journal
+
+# Ignore .env file
+.env
