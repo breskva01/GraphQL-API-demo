@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore SQLite database file
+*.sqlite
+*.sqlite3
+
+# SQLite temporary and journal files
+*.sqlite-journal
+*.sqlite3-journal
