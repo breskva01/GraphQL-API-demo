@@ -1,4 +1,5 @@
 const userRepo = require('./repo/userRepo');
+const emailValidator = require('./service/emailValidator');
 
 const resolvers = {
     Query: {
@@ -15,6 +16,9 @@ const resolvers = {
       addUser: async (parent, args) => {
         try {
           const {name, email} = args;
+          if (!emailValidator.isValid(email)) {
+            throw new Error('Invalid email');
+          }
           return await userRepo.addUser(name, email);
         }
         catch (err) {
