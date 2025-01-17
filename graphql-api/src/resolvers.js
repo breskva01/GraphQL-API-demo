@@ -1,6 +1,7 @@
 const userRepo = require('./repo/userRepo');
 const emailValidator = require('./service/emailValidator');
 const{ mapUserToGraphQL } = require('./service/userMapper');
+const { GraphQLError } = require('graphql');
 
 const resolvers = {
     Query: {
@@ -20,12 +21,19 @@ const resolvers = {
         try {
           const {name, email} = args;
           if (!emailValidator.isValid(email)) {
-            throw new Error('Invalid email');
+            throw new GraphQLError('Invalid email', {
+              extensions: {
+                  code: 'INVALID_INPUT',
+              },
+          });
           }
           const newUser = await userRepo.addUser(name, email);
           return mapUserToGraphQL(newUser);
         }
         catch (err) {
+          if (err instanceof GraphQLError) {
+            throw err;
+        }
           throw new Error(err.message);
         }
       },

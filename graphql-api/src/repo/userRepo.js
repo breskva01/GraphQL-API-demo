@@ -63,7 +63,7 @@ class UserRepo {
             return user;  
         } catch (err) {
             console.error('Error performing logical delete:', err);
-            throw new Error('Failed to delete user');
+            throw err;
         }
     }
 
@@ -84,7 +84,7 @@ class UserRepo {
             return user;;
         } catch (err) {
             console.error('Error performing physical delete:', err);
-            throw new Error('Failed to delete user');
+            throw err;
         }
     }
 }
