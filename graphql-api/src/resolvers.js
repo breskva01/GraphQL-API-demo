@@ -1,5 +1,5 @@
 const userRepo = require('./repo/userRepo');
-const emailValidator = require('./service/emailValidator');
+const { isEmailValid } = require('./service/emailValidator');
 const{ mapUserToGraphQL } = require('./service/userMapper');
 const { GraphQLError } = require('graphql');
 
@@ -20,7 +20,7 @@ const resolvers = {
       addUser: async (parent, args) => {
         try {
           const {name, email} = args;
-          if (!emailValidator.isValid(email)) {
+          if (!isEmailValid(email)) {
             throw new GraphQLError('Invalid email', {
               extensions: {
                   code: 'INVALID_INPUT',
